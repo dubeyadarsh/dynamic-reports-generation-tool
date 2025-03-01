@@ -40,17 +40,59 @@ The **Dynamic Report Generation System** is a robust, metadata-driven framework 
 ### Generating Reports
 Send a **POST** request to:
 ```http
-POST /api/reports/generate
+POST /report
 ```
 With a JSON payload specifying the required parameters:
 ```json
 {
-  "reportType": "EXCEL",
-  "filters": {
-    "dateRange": "2024-01-01 to 2024-12-31",
-    "status": "ACTIVE"
+  "name": "outward",
+  "datasource":{
+    "spName":"sp_reports_SalesRegister",
+    "spParams":["xyz", "01-01-2025", "20-01-2025", "","","",""]
+  },
+  "meta": {
+    "fixed": {
+      "column1": {
+        "name": "Supplier GSTIN",
+        "mappedIndex": 1,
+        "format": "uppercase"
+      },
+      "column2": {
+        "name": "Invoice Ref No.",
+        "mappedIndex": 0,
+        "format": "sentencecase"
+      },
+      "column3": {
+        "name": "Document Type",
+        "mappedIndex": 2,
+        "format": "lowercase"
+      },
+      "column4": {
+        "name": "Invoice Amount",
+        "mappedIndex": 73,
+        "format": null
+      },
+      "column5": {
+        "name": "Invoice Date",
+        "mappedIndex": 41,
+        "format": "dd/MM/yyyy"
+      }
+    },
+    "filters": [
+      {
+        "column": "Invoice Amount",
+        "condition": ">",
+        "value": 1000
+      },
+      {
+        "column": "column5",
+        "condition": "<",
+        "value": "13/01/2025"
+      }
+    ]
   }
 }
+
 ```
 
 
